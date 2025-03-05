@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.regex.Pattern;
-
 @Service
 public class MedicoService {
 
@@ -17,11 +15,10 @@ public class MedicoService {
 
     @Transactional
     public MedicoEntity createMedico(MedicoEntity medico) throws IllegalOperationException {
-        
-        if (medico.getRegistroMedico() == null || !Pattern.matches("^RM\\d+$", medico.getRegistroMedico())) {
-            throw new IllegalOperationException("El registro médico debe comenzar con 'RM' seguido de números.");
+        if (!medico.getRegistroMedico().startsWith("RM")) {
+            throw new IllegalOperationException("El registro médico debe comenzar con 'RM'.");
         }
-
         return medicoRepository.save(medico);
     }
 }
+
